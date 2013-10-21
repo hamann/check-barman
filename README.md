@@ -100,3 +100,25 @@ nagios ALL=NOPASSWD:/usr/lib/nagios/plugins/check-barman/check-barman.rb
 ```
 
 and use '-h /var/lib/barman' as option to nagios or nrpe command definition!
+
+## Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
+
+
+## License and Authors
+
+* Author:: Holger Amann holger@sauspiel.de
+
+* Copyright:: 2013, holger@sauspiel.de
+
+Licensed under the [MIT License](http://opensource.org/licenses/mit-license.php)
+
+
+
+
+
