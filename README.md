@@ -1,6 +1,6 @@
 #check-barman
 
-A nagios plugin for PostgreSQL backupt tool [barman](http://www.pgbarman.org)
+A nagios plugin for PostgreSQL backup tool [barman](http://www.pgbarman.org)
 
 
 ## Overview
@@ -91,3 +91,12 @@ $ ./check-barman.rb -a missing_wals -s test1
 "There are no missing wal files in the latest backup"
 ```
 
+## Configuration
+
+Give `nagios` user all privileges to read backup data or executing `barman` by adding an entry to `sudoers` file like:
+```
+Defaults:nagios !requiretty
+nagios ALL=NOPASSWD:/usr/lib/nagios/plugins/check-barman/check-barman.rb
+```
+
+and use '-h /var/lib/barman' as option to nagios or nrpe command definition!
