@@ -3,7 +3,7 @@ GEM
   specs:
     mixlib-shellout (1.1.0)
     rake (10.1.0)
-    rbarman (0.0.8)
+    rbarman (0.0.9)
       bundler (~> 1.3)
       mixlib-shellout (~> 1.1.0)
       rake
@@ -12,4 +12,4 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  rbarman (~> 0.0.8)
+  rbarman (~> 0.0.9)
