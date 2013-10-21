@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 require 'optparse'
-require 'rbarman'
+require 'bundler/setup'
+
+Bundler.require
 
 include RBarman
 
