@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 require 'optparse'
-require 'bundler/setup'
-
-Bundler.require
+require 'rbarman'
 
 include RBarman
 
@@ -133,6 +131,11 @@ critical = options[:critical]
 action = options[:action]
 
 return_code = 1
+
+if ARGV.count == 0
+  puts optparse
+  exit 1
+end
 
 begin
   return_code = case action
