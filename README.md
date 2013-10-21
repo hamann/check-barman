@@ -30,6 +30,8 @@ Usage check-barman.rb [options]
     -s, --server SERVER              The 'server' in barman terms
     -w, --warning WARNING            The warning level
     -c, --critical CRITICAL          The critical level
+    -h, --barman-home PATH           path to barman's Home directory, default /var/lib/barman
+    -b, --barman-binary PATH         path to barman binary, default /usr/bin/barman
 ```
 
 ## Usage
@@ -66,7 +68,7 @@ $ ./check-barman.rb -a pg -s test1
 PG connection ok
 ```
 
-check number of backups and set warning if number of backups is > 3 or set critical if number of backups is > 6 
+check number of backups and set warning if number of backups is > 5 or set critical if number of backups is > 6 
 ```sh
 $ ./check-barman.rb -a backups_available -s test1 -w 5 -c 6
 "4 backups available"

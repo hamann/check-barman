@@ -121,6 +121,22 @@ optparse = OptionParser.new do |opts|
   opts.on('-c', '--critical CRITICAL', 'The critical level') do |critical|
     options[:critical] = critical
   end
+
+  options[:barman_home] = "/var/lib/barman"
+  opts.on('-h', '--barman-home PATH', String, "path to barman's Home directory, default /var/lib/barman") do |h|
+    options[:barman_home] = h
+  end
+
+  options[:barman_binary] = "/usr/bin/barman"
+  opts.on('-b', '--barman-binary PATH', String, "path to barman binary, default /usr/bin/barman") do |b|
+    options[:barman_binary] = b
+  end
+
+end
+
+if ARGV.count == 0
+  puts optparse
+  exit 1
 end
 
 optparse.parse!
@@ -132,10 +148,8 @@ action = options[:action]
 
 return_code = 1
 
-if ARGV.count == 0
-  puts optparse
-  exit 1
-end
+Configuration.instance.binary = options[:barman_binary]
+Configuration.instance.barman_home = options[:barman_home]
 
 begin
   return_code = case action
