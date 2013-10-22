@@ -94,12 +94,12 @@ end
 def check_missing_wals(server)
   missing = Backups.all(server, {:with_wal_files => true}).latest.missing_wal_files
   if missing.count == 0
-    p "There are no missing wal files in the latest backup"
+    puts "There are no missing wal files in the latest backup"
     return 0
   else
     lines = Array.new
-    missing.each { |m| lines << "\n#{m}" }
-    p "There are missing wal files in the latest backup: #{ lines }"
+    missing.each { |m| lines << m.to_s }
+    puts "There are #{missing.count} missing wal files in the latest backup:\n #{ lines.join("\n") }"
     return 2
   end
 end
