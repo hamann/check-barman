@@ -99,7 +99,12 @@ Defaults:nagios !requiretty
 nagios ALL=NOPASSWD:/usr/lib/nagios/plugins/check-barman/check-barman.rb
 ```
 
-and use '-h /var/lib/barman' as option to nagios or nrpe command definition!
+and use '-h /var/lib/barman' as option to nagios or nrpe command definition, e.g for `nrpe`
+
+```
+$ cat /etc/nagios/nrpe.d/barman_commands.cfg
+command[check_barman_missing_wals_test]=sudo /usr/lib/nagios/plugins/check-barman/check-barman.rb -a missing_wals -h /var/lib/barman -s test
+```
 
 ## Contributing
 
