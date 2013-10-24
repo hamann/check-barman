@@ -76,7 +76,7 @@ end
 
 def check_last_wal_received(server, warning, critical)
   last = Backups.all(server, { :with_wal_files => true }).latest.wal_files.last
-  diff = (Time.now - (last.created - Time.now.gmt_offset)).to_i / 60
+  diff = (Time.now - last.created).to_i
   p "Last wal was received #{diff} seconds ago (#{last})"
   nagios_return_value(diff, warning, critical)
 end
