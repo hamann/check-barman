@@ -75,10 +75,16 @@ def check_backups_available(server, warning, critical)
 end
 
 def check_last_wal_received(server, warning, critical)
-  last = Backups.all(server, { :with_wal_files => true }).latest.wal_files.last
-  diff = (Time.now - last.created).to_i
-  p "Last wal was received #{diff} seconds ago (#{last})"
-  nagios_return_value(diff, warning, critical)
+  latest = Backups.all(server, { :with_wal_files => true }).latest
+  if latest.status == :started
+    p 'New backup started'
+    return 0
+  else
+    last = latest.wal_files.last
+    diff = (Time.now - last.created).to_i
+    p "Last wal was received #{diff} seconds ago (#{last})"
+    nagios_return_value(diff, warning, critical)
+  end
 end
 
 def check_failed_backups(server, warning, critical)
@@ -92,7 +98,13 @@ def check_failed_backups(server, warning, critical)
 end
 
 def check_missing_wals(server)
-  missing = Backups.all(server, {:with_wal_files => true}).latest.missing_wal_files
+  latest = Backups.all(server, { :with_wal_files => true }).latest
+  if latest.status == :started
+    p 'New backup started'
+    return 0
+  end
+
+  missing = latest.missing_wal_files
   if missing.count == 0
     puts "There are no missing wal files in the latest backup"
     return 0
