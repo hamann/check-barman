@@ -1,15 +1,12 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    mixlib-shellout (1.1.0)
-    rake (10.1.0)
-    rbarman (0.0.11)
-      bundler (~> 1.3)
-      mixlib-shellout (~> 1.1.0)
-      rake
+    mixlib-shellout (1.3.0)
+    rbarman (0.0.12)
+      mixlib-shellout (~> 1.3.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  rbarman (~> 0.0.11)
+  rbarman (~> 0.0.12)
