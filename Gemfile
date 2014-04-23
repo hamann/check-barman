@@ -1,3 +1,3 @@
 source 'https://rubygems.org'
 
-gem 'rbarman', '~> 0.0.12'
+gem 'rbarman', '~> 0.0.13'
