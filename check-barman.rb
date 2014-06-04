@@ -167,6 +167,13 @@ optparse = OptionParser.new do |opts|
     options[:barman_binary] = b
   end
 
+  options[:version]
+  opts.on('-v', '--version', "Show version information") do
+    puts "check-barman v0.1.0"
+    puts "rbarman v#{::RBarman::VERSION}"
+    exit
+  end
+
 end
 
 if ARGV.count == 0
