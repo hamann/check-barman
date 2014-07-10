@@ -26,12 +26,13 @@ $ gem install rbarman
 $ chmod +x check-barman.rb
 $ ./check-barman.rb
 Usage check-barman.rb [options]
-    -a, --action ACTION              The name of the check to be executed
-    -s, --server SERVER              The 'server' in barman terms
-    -w, --warning WARNING            The warning level
-    -c, --critical CRITICAL          The critical level
-    -h, --barman-home PATH           path to barman's Home directory, default /var/lib/barman
-    -b, --barman-binary PATH         path to barman binary, default /usr/bin/barman
+    -a, --action ACTION                      The name of the check to be executed
+    -s, --server SERVER                      The 'server' in barman terms
+    -w, --warning WARNING                    The warning level
+    -c, --critical CRITICAL                  The critical level
+    -h, --barman-home PATH                   path to barman's Home directory, default /var/lib/barman
+    -b, --barman-binary PATH                 path to barman binary, default /usr/bin/barman
+    -m, --missing-wals-check-limit NUMBER    Check only the last n wal files (reduces execution time)
 ```
 
 ## Usage
@@ -85,7 +86,7 @@ check if there are failed backups
 $ ./check-barman.rb -a failed_backups -s test1 -w 1 -c 2
 ```
 
-check if all WAL files exist in the latest backup. This check is more time consuming because it has to compute the range of WAL files which have to exist since start of base backup and the last received WAL file, and check for there according entry in xlog.db (=> barman processed them). Consider to increase check_timeout or check_interval in case your backups are large!
+check if all WAL files exist in the latest backup. This check is more time consuming because it has to compute the range of WAL files which have to exist since start of base backup and the last received WAL file, and check for there according entry in xlog.db (=> barman processed them). Consider to increase check_timeout or check_interval in case your backups are large! Alternatively define a limit with '-m N', which checks only the last N wal files
 ```sh
 $ ./check-barman.rb -a missing_wals -s test1
 "There are no missing wal files in the latest backup"

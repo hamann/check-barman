@@ -102,7 +102,7 @@ def check_failed_backups(server, warning, critical)
   nagios_return_value(count, warning, critical)
 end
 
-def check_missing_wals(server)
+def check_missing_wals(server, limit = nil)
   latest = Backups.all(server, { :with_wal_files => true }).latest
 
   if latest.nil?
@@ -113,6 +113,12 @@ def check_missing_wals(server)
   if latest.status == :started
     p 'New backup started'
     return 0
+  end
+
+  if limit && latest.wal_files.count > limit
+    wal_files = latest.wal_files.reverse[0..limit].reverse
+    latest.wal_files = wal_files
+    latest.begin_wal = wal_files.first
   end
 
   missing = latest.missing_wal_files
@@ -153,6 +159,11 @@ optparse = OptionParser.new do |opts|
     options[:action] = action
   end
 
+  options[:missing_wals_check_limit] = nil
+  opts.on('-m', '--missing-wals-check-limit NUMBER', Integer, 'Check only the last n wal files (reduces execution time)') do |limit|
+    options[:missing_wals_check_limit] = limit
+  end
+
   options[:server] = nil
   opts.on('-s', '--server SERVER ', String, 'The \'server\' in barman terms') do |server|
     options[:server] = server
@@ -180,7 +191,7 @@ optparse = OptionParser.new do |opts|
 
   options[:version]
   opts.on('-v', '--version', "Show version information") do
-    puts "check-barman v0.1.1"
+    puts "check-barman v0.2.0"
     puts "rbarman v#{::RBarman::VERSION}"
     exit
   end
@@ -223,7 +234,7 @@ begin
                   check_failed_backups(server, warning, critical)
                 when :missing_wals
                   validate_params({:server => server})
-                  check_missing_wals(server)
+                  check_missing_wals(server, options[:missing_wals_check_limit])
                 end
 rescue OptionParser::MissingArgument
   puts $!.to_s
