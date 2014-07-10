@@ -180,7 +180,7 @@ optparse = OptionParser.new do |opts|
 
   options[:version]
   opts.on('-v', '--version', "Show version information") do
-    puts "check-barman v0.1.0"
+    puts "check-barman v0.1.1"
     puts "rbarman v#{::RBarman::VERSION}"
     exit
   end
