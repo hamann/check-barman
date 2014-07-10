@@ -76,6 +76,11 @@ end
 
 def check_last_wal_received(server, warning, critical)
   latest = Backups.all(server, { :with_wal_files => true }).latest
+  if latest.nil?
+    p "No backups available"
+    return 0
+  end
+
   if latest.status == :started
     p 'New backup started'
     return 0
