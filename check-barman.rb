@@ -39,6 +39,10 @@ def nagios_return_value(value, w, c)
   ret_val
 end
 
+def latest_backup_id(server)
+  Backups.all(server).latest.id
+end
+
 def check_ssh(server)
   return_code = 0
   ssh_ok = Server.by_name(server).ssh_check_ok
@@ -75,7 +79,7 @@ def check_backups_available(server, warning, critical)
 end
 
 def check_last_wal_received(server, warning, critical)
-  latest = Backups.all(server, { :with_wal_files => true }).latest
+  latest = Backup.by_id(server, latest_backup_id(server), { :with_wal_files => true })
   if latest.nil?
     p "No backups available"
     return 0
@@ -103,7 +107,7 @@ def check_failed_backups(server, warning, critical)
 end
 
 def check_missing_wals(server, limit = nil)
-  latest = Backups.all(server, { :with_wal_files => true }).latest
+  latest = Backup.by_id(server, latest_backup_id(server), { :with_wal_files => true })
 
   if latest.nil?
     p "No backups available!"
