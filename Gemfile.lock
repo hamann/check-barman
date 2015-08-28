@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     mixlib-shellout (1.3.0)
-    rbarman (0.0.14)
+    rbarman (0.0.15)
       mixlib-shellout (~> 1.3.0)
 
 PLATFORMS
