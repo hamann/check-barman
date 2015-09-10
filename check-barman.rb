@@ -47,9 +47,9 @@ def check_ssh(server)
   return_code = 0
   ssh_ok = Server.by_name(server).ssh_check_ok
   if ssh_ok
-    puts "SSH connection ok"
+    puts "SSH connection ok for #{server}"
   else
-    puts "SSH connection failed!"
+    puts "SSH connection failed for #{server}!"
     return_code = 2
   end
   return_code
@@ -59,9 +59,9 @@ def check_pg(server)
   return_code = 0
   pg_ok = Server.by_name(server).pg_conn_ok
   if pg_ok
-    puts "PG connection ok"
+    puts "PG connection ok for #{server}"
   else
-    puts "PG connection failed!"
+    puts "PG connection failed for #{server}!"
     return_code = 2
   end
   return_code
@@ -71,9 +71,9 @@ def check_backups_available(server, warning, critical)
   return_code = 0
   count = Backups.all(server).count
   if count == 0
-    p "No backups available!"
+    p "No backups available! for #{server}"
   else
-    p "#{count} backups available"
+    p "#{count} backups available for #{server}"
     nagios_return_value(count, warning, critical)
   end
 end
@@ -86,12 +86,12 @@ def check_last_wal_received(server, warning, critical)
   end
 
   if latest.status == :started
-    p 'New backup started'
+    p "New backup started for #{server}"
     return 0
   else
     last = latest.wal_files.last
     diff = (Time.now - last.created).to_i
-    p "Last wal was received #{diff} seconds ago (#{last})"
+    p "Last wal was received #{diff} seconds ago (#{last}) for #{server}"
     nagios_return_value(diff, warning, critical)
   end
 end
@@ -102,7 +102,7 @@ def check_failed_backups(server, warning, critical)
   backups.each do |backup|
     count = count + 1 if backup.status == :failed
   end
-  p "#{count} backup(s) failed"
+  p "#{count} backup(s) failed for #{server}"
   nagios_return_value(count, warning, critical)
 end
 
@@ -115,7 +115,7 @@ def check_missing_wals(server, limit = nil)
   end
 
   if latest.status == :started
-    p 'New backup started'
+    p "New backup started for #{server}"
     return 0
   end
 
@@ -127,12 +127,12 @@ def check_missing_wals(server, limit = nil)
 
   missing = latest.missing_wal_files
   if missing.count == 0
-    puts "There are no missing wal files in the latest backup"
+    puts "There are no missing wal files in the latest backup for #{server}"
     return 0
   else
     lines = Array.new
     missing.each { |m| lines << m.to_s }
-    puts "There are #{missing.count} missing wal files in the latest backup:\n #{ lines.join("\n") }"
+    puts "There are #{missing.count} missing wal files for #{server} in the latest backup for #{server}:\n #{ lines.join("\n") }"
     return 2
   end
 end
