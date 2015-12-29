@@ -74,8 +74,10 @@ def check_backups_available(server, warning, critical)
     p "No backups available!"
   else
     p "#{count} backups available"
-    nagios_return_value(count, warning, critical)
+    return_code = nagios_return_value(count, warning, critical)
   end
+
+  return_code
 end
 
 def check_last_wal_received(server, warning, critical)
