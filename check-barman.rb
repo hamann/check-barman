@@ -209,8 +209,14 @@ if ARGV.count == 0
   exit 1
 end
 
-optparse.parse!
-
+begin
+  optparse.parse!
+rescue OptionParser::InvalidArgument
+  puts $!.to_s
+  puts optparse
+  exit 1
+end
+  
 server = options[:server]
 warning = options[:warning]
 critical = options[:critical]
