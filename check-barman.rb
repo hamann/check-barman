@@ -27,14 +27,25 @@ require 'rbarman'
 
 include RBarman
 
-def nagios_return_value(value, w, c)
-  ret_val = 0
-  if value >= c.to_i
-    ret_val = 2
-  elsif value >= w.to_i
-    ret_val = 1
+def nagios_return_value(value, w, c, reverse = false)
+  if reverse == true 
+    ret_val = 0
+    if value <= c.to_i
+      ret_val = 2
+    elsif value <= w.to_i
+      ret_val = 1
+    else
+      ret_val = 0
+    end
   else
     ret_val = 0
+    if value >= c.to_i
+      ret_val = 2
+    elsif value >= w.to_i
+      ret_val = 1
+    else
+      ret_val = 0
+    end
   end
   ret_val
 end
@@ -74,7 +85,7 @@ def check_backups_available(server, warning, critical)
     p "No backups available!"
   else
     p "#{count} backups available"
-    return_code = nagios_return_value(count, warning, critical)
+    return_code = nagios_return_value(count, warning, critical, true)
   end
 
   return_code
