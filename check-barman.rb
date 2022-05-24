@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 # Copyright (c) 2013 Holger Amann <holger@sauspiel.de>
-# 
+#
 # MIT License
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
 # "Software"), to deal in the Software without restriction, including
@@ -10,10 +10,10 @@
 # distribute, sublicense, and/or sell copies of the Software, and to
 # permit persons to whom the Software is furnished to do so, subject to
 # the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be
 # included in all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 # EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -72,6 +72,7 @@ def check_backups_available(server, warning, critical)
   count = Backups.all(server).count
   if count == 0
     p "No backups available!"
+    return_code = 2
   else
     p "#{count} backups available"
     return_code = nagios_return_value(count, warning, critical)
@@ -216,7 +217,7 @@ rescue OptionParser::InvalidArgument
   puts optparse
   exit 1
 end
-  
+
 server = options[:server]
 warning = options[:warning]
 critical = options[:critical]
